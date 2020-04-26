@@ -1,56 +1,76 @@
 import React, { useState } from 'react';
 import './App.css';
 import Person from './Person/Person'
-import UserInput from './UserInput/UserInput';
-import UserOutput from './UserOutput/UserOutput';
 
 const app = props => {
-  /*const [personsState, updatePersonsState] = useState({
+  const [personsState, updatePersonsState] = useState({
     persons: [
       {name: 'Satya', age: 24},
       {name: 'Max', age: 25},
-      {name: 'Man', age: 28},
-    ]
+      {name: 'Sumo', age: 28},
+    ],
+    willShow: false,
+    buttonValue: "Show Persons"
   });
 
-  const inputHandler = (event) => {
-    updatePersonsState({
+  const buttonHandler = () => {
+    personsState.willShow ? updatePersonsState({
+      buttonValue: "Show Persons",
+      willShow: !personsState.willShow
+    }) : updatePersonsState({
       persons: [
-        {name: event.target.value, age: 24},
-        {name: event.target.value, age: 25},
-        {name: event.target.value, age: 28},
-      ]
-    });
-  }*/
-
-  const [userDetails, updateUserState] = useState({
-   userName : 'Satya'
-  });
-
-  const inputHandler = (event) => {
-    updateUserState({
-      userName: event.target.value
-    });
+        {name: 'Satya', age: 24},
+        {name: 'Max', age: 25},
+        {name: 'Sumo', age: 28},
+      ],
+      buttonValue: "Hide Persons",
+      willShow: !personsState.willShow
+    });  
   }
 
-  const style = {
-      backgroundColor: 'white'
+  const deleteHandler = (personIndex) => {
+    let persons = [...personsState.persons];
+    persons.splice(personIndex, 1)
+    updatePersonsState({
+      persons: persons,
+      buttonValue: personsState.buttonValue,
+      willShow: personsState.willShow
+    })
+  }
+
+  const changeHandler = (event, personIndex) => {
+    let persons = [...personsState.persons];
+
+    let person = { ...personsState.persons[personIndex] }
+    person.name = event.target.value;
+
+    persons[personIndex] = person;
+
+    updatePersonsState({
+      persons: persons,
+      buttonValue: personsState.buttonValue,
+      willShow: personsState.willShow
+    })
+  }
+
+  let showPersons = null;
+
+  if (personsState.willShow) {
+    showPersons = personsState.persons.map((person, index) => {
+      return <Person
+        key={index}
+        name={person.name}
+        age={person.age}
+        change={(event) => {changeHandler(event, index)}}
+        deleteHandler={deleteHandler.bind(null, index)}/>
+    })
   }
 
   return (
-    <div className="App" style={style}>
-      {/*<h1>Generate Random Names...!</h1>{
-        personsState.persons.map((person, index) => {
-          return <Person
-            key={index}
-            name={person.name}
-            age={person.age}
-            change={inputHandler}>
-          </Person>
-        })
-      }*/}
-      <UserInput change={inputHandler} userName={userDetails.userName}></UserInput>
-      <UserOutput userName={userDetails.userName}></UserOutput>
+    <div className="App">
+      <h1>Generate Person Names by clicking the button...!</h1>
+      <button onClick={buttonHandler}>{personsState.buttonValue}</button>
+      {showPersons}
     </div>
   );
 }
