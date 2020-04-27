@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person'
 
 const app = props => {
@@ -53,9 +54,27 @@ const app = props => {
     })
   }
 
+  const styleButton = {
+    backgroundColor: 'green',
+    color: 'white',
+    font: 'inherit',
+    border: '1px solid blue',
+    padding: '8px',
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: 'lightgreen',
+      color: 'black'
+    }
+  }
+
   let showPersons = null;
 
   if (personsState.willShow) {
+    styleButton.backgroundColor = 'red';
+    styleButton[':hover'] = {
+      backgroundColor: '#ff6464',
+      color: 'black'
+    }
     showPersons = personsState.persons.map((person, index) => {
       return <Person
         key={index}
@@ -67,12 +86,14 @@ const app = props => {
   }
 
   return (
-    <div className="App">
-      <h1>Generate Person Names by clicking the button...!</h1>
-      <button onClick={buttonHandler}>{personsState.buttonValue}</button>
-      {showPersons}
-    </div>
+    <StyleRoot>
+      <div className="App">
+        <h1>Generate Person Names by clicking the button...!</h1>
+        <button style={styleButton} onClick={buttonHandler}>{personsState.buttonValue}</button>
+        {showPersons}
+      </div>
+    </StyleRoot>
   );
 }
 
-export default app;
+export default Radium(app);
