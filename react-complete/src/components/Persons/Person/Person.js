@@ -1,8 +1,8 @@
-import React from 'react';
-import Radium from 'radium';
+import React from '../../../../node_modules/react';
+import Radium from '../../../../node_modules/radium';
 import './Person.css'
 
-const person = (props) => {
+const Person = (props) => {
     const style = {
         '@media (min-width: 500px)': {
             width: '450px'
@@ -21,4 +21,4 @@ const person = (props) => {
     )
 }
 
-export default Radium(person);
+export default Radium(Person);

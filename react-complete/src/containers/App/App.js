@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
-import Person from './Person/Person'
+import Persons from '../../components/Persons/Persons';
+import Cockpit from '../../components/Cockpit/Cockpit';
+import Radium, { StyleRoot } from '../../../node_modules/radium';
 
-const app = props => {
+const App = props => {
   const [personsState, updatePersonsState] = useState({
     persons: [
       {name: 'Satya', age: 24},
@@ -53,44 +55,27 @@ const app = props => {
     })
   }
 
-  const styleButton = {
-    backgroundColor: 'green',
-    color: 'white',
-    font: 'inherit',
-    border: '1px solid blue',
-    padding: '8px',
-    cursor: 'pointer',
-    ':hover': {
-      backgroundColor: 'lightgreen',
-      color: 'black'
-    }
-  }
-
   let showPersons = null;
 
   if (personsState.willShow) {
-    styleButton.backgroundColor = 'red';
-    styleButton[':hover'] = {
-      backgroundColor: '#ff6464',
-      color: 'black'
-    }
-    showPersons = personsState.persons.map((person, index) => {
-      return <Person
-        key={index}
-        name={person.name}
-        age={person.age}
-        change={(event) => {changeHandler(event, index)}}
-        deleteHandler={deleteHandler.bind(null, index)}/>
-    })
+    showPersons =  <Persons
+          persons={personsState.persons}
+          change={changeHandler}
+          delete={deleteHandler} />
   }
 
   return (
+    <StyleRoot>
       <div className="App">
-        <h1>Generate Person Names by clicking the button...!</h1>
-        <button style={styleButton} onClick={buttonHandler}>{personsState.buttonValue}</button>
+        <Cockpit
+          willShow={personsState.willShow}
+          buttonhandler={buttonHandler}
+          buttonvalue={personsState.buttonValue}
+        />
         {showPersons}
       </div>
+    </StyleRoot>
   );
 }
 
-export default app;
+export default Radium(App);
