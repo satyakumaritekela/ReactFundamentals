@@ -3,6 +3,7 @@ import './App.css';
 import Persons from '../../components/Persons/Persons';
 import Cockpit from '../../components/Cockpit/Cockpit';
 import Radium, { StyleRoot } from '../../../node_modules/radium';
+import AuthContext from '../../context/auth-context';
 
 const App = props => {
   const [personsState, updatePersonsState] = useState({
@@ -67,12 +68,14 @@ const App = props => {
   return (
     <StyleRoot>
       <div className="App">
-        <Cockpit
-          willShow={personsState.willShow}
-          buttonhandler={buttonHandler}
-          buttonvalue={personsState.buttonValue}
-        />
-        {showPersons}
+        <AuthContext.Provider >
+          <Cockpit
+            willShow={personsState.willShow}
+            buttonhandler={buttonHandler}
+            buttonvalue={personsState.buttonValue}
+          />
+          {showPersons}
+        </AuthContext.Provider>
       </div>
     </StyleRoot>
   );
