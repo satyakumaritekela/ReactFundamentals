@@ -1,15 +1,23 @@
-import React, { Component } from 'react';
+import React from "react";
 
-import Blog from './containers/Blog/Blog';
+const Loc = (props) => {
+    return <div style={props.style}>{props.name}</div>;
+};
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Blog />
-      </div>
-    );
-  }
-}
+const Hoc = Comp => props => {
+    return <Comp style={{ color: "yellow" }} {...props} />;
+};
+
+const Comp = Hoc(Loc)
+
+const App = () => {
+    const details = {
+        name: "Satya Kumar",
+    };
+  return (
+    <div className="App"> 
+      <Comp {...details}/>
+    </div>);
+};
 
 export default App;
