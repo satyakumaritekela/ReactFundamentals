@@ -1,56 +1,35 @@
-import React, { useState, useCallback } from "react";
+import React, {
+    useState,
+    useCallback,
+    useRef,
+    useEffect,
+    useMemo,
+} from "react";
 import "./App.css";
-import Item from "./components/Item/Item";
 
-const initialState = [
-    {
-        name: "tomato",
-        calories: 20,
-    },
-    {
-        name: "rice",
-        calories: 30,
-    },
-];
+import Child from "./components/Child";
 
 function App() {
-    const [list, setList] = useState(initialState);
+    const [i, setI] = useState(0);
 
-    const addItemHandler = useCallback(() => {
-        setList([
-            ...list,
-            {
-                name: "candy",
-                calories: 100,
-            },
-        ]);
-    }, [list]);
-
-    const removeItemHandler = (i) => {
-        const filteredList = list.slice(0, i).concat(list.slice(i + 1, list.length));
-        setList(filteredList);
+    const incrementHandler = () => {
+        setI((i) => i + 1);
     };
 
-    const listDOM = list.map((item, key) => {
-        return (
-            <Item
-                key={key}
-                index={key}
-                item={item}
-                removeItemHandler={(index) => removeItemHandler(index)}
-            />
-        );
-    });
+    const memoChild = useMemo(() => {
+        return <Child />;
+    }, []);
 
     return (
         <div className="App">
-            <header className="App-header content">
-                {listDOM}
-                <div className="buttons-div">
-                    <button className="add-button" onClick={addItemHandler}>
-                        Add Item
-                    </button>
-                </div>
+            <header className="App-header">
+                <h3>Use Memo</h3>
+                <h2>i: {i}</h2>
+                <button id="submitButton" onClick={incrementHandler}>
+                    Submit
+                </button>
+                <Child />
+                {memoChild}
             </header>
         </div>
     );
