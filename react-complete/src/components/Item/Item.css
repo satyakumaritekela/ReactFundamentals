@@ -1,0 +1,16 @@
+.Item {
+    display: flex;
+    flex-flow: row;
+    width: 25%;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.item-description {
+    min-width: 45%;
+    text-align: center;
+}
+
+.delete-icon:hover {
+    color: red;
+}

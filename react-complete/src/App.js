@@ -1,23 +1,59 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
+import "./App.css";
+import Item from "./components/Item/Item";
 
-const Loc = (props) => {
-    return <div style={props.style}>{props.name}</div>;
-};
+const initialState = [
+    {
+        name: "tomato",
+        calories: 20,
+    },
+    {
+        name: "rice",
+        calories: 30,
+    },
+];
 
-const Hoc = Comp => props => {
-    return <Comp style={{ color: "yellow" }} {...props} />;
-};
+function App() {
+    const [list, setList] = useState(initialState);
 
-const Comp = Hoc(Loc)
+    const addItemHandler = useCallback(() => {
+        setList([
+            ...list,
+            {
+                name: "candy",
+                calories: 100,
+            },
+        ]);
+    }, [list]);
 
-const App = () => {
-    const details = {
-        name: "Satya Kumar",
+    const removeItemHandler = (i) => {
+        const filteredList = list.slice(0, i).concat(list.slice(i + 1, list.length));
+        setList(filteredList);
     };
-  return (
-    <div className="App"> 
-      <Comp {...details}/>
-    </div>);
-};
+
+    const listDOM = list.map((item, key) => {
+        return (
+            <Item
+                key={key}
+                index={key}
+                item={item}
+                removeItemHandler={(index) => removeItemHandler(index)}
+            />
+        );
+    });
+
+    return (
+        <div className="App">
+            <header className="App-header content">
+                {listDOM}
+                <div className="buttons-div">
+                    <button className="add-button" onClick={addItemHandler}>
+                        Add Item
+                    </button>
+                </div>
+            </header>
+        </div>
+    );
+}
 
 export default App;
