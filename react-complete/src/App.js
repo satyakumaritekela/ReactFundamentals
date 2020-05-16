@@ -1,27 +1,32 @@
-import React, {
-    useState,
-} from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-import usePrevious from "./components/usePrevious";
+import useCustomFetch from "./hooks/useCustomFetch";
 
 function App() {
-    const [i, setI] = useState(0);
-    const previousI = usePrevious(i);
-    const incrementHandler = () => {
-        setI((i) => i + 1);
-    };
+    const [url, setUrl] = useState("");
+    const [userName, loading, error] = useCustomFetch(url);
 
-    console.log("previousI", previousI);
+    const changeUserNameHandler = (e) => {
+        if (e.key === "Enter") {
+            setUrl("http://api.github.com/users/" + e.target.value);
+        }
+    };
     return (
         <div className="App">
             <header className="App-header">
-                <h3>Use Memo</h3>
-                <h2>i: {i}</h2>
-                <button id="submitButton" onClick={incrementHandler}>
-                    Submit
-                </button>
-                <h2>Previous Child: {previousI}</h2>
+                <h2>
+                    GitID:
+                    <input
+                        type="text"
+                        onKeyPress={changeUserNameHandler}
+                    ></input>
+                    {loading && url && <div>Loading ...</div>}
+                    {!loading && userName && userName.data && userName.data.followers && (
+                        <div>Followers: {userName.data.followers}</div>
+                    )}
+                    {error && <div>Error: {error}</div>}
+                </h2>
             </header>
         </div>
     );
