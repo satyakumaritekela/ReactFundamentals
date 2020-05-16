@@ -1,25 +1,18 @@
 import React, {
     useState,
-    useCallback,
-    useRef,
-    useEffect,
-    useMemo,
 } from "react";
 import "./App.css";
 
-import Child from "./components/Child";
+import usePrevious from "./components/usePrevious";
 
 function App() {
     const [i, setI] = useState(0);
-
+    const previousI = usePrevious(i);
     const incrementHandler = () => {
         setI((i) => i + 1);
     };
 
-    const memoChild = useMemo(() => {
-        return <Child />;
-    }, []);
-
+    console.log("previousI", previousI);
     return (
         <div className="App">
             <header className="App-header">
@@ -28,8 +21,7 @@ function App() {
                 <button id="submitButton" onClick={incrementHandler}>
                     Submit
                 </button>
-                <Child />
-                {memoChild}
+                <h2>Previous Child: {previousI}</h2>
             </header>
         </div>
     );
